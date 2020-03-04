@@ -11,14 +11,24 @@ const eventFields = {
   duration: { type: DataTypes.RANGE(DataTypes.DATE), allowNull: false },
 };
 
-const initializeEventModel = function(sequelizeInstance) {
+
+const makeEventModal = function({
+  connection,
+  forceSync = false,
+}) {
   Event.init(eventFields, {
-    sequelizeInstance, 
+    sequelize: connection, 
     modelName: 'events',
     timestamps: true,
   });
+
+  if(forceSync) {
+    Event.sync({ alter: true });
+  }
+
+  return Event;
 }
 
-module.exports = {
-  init: initializeEventModel,
-};
+module.exports = makeEventModal;
+
+
