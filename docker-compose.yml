@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - nepsitydb:/var/lib/postgresql/data
+    ports:
+      - 5439:5432
+    environment:
+      - POSTGRES_DB=nepsitydb
+      - POSTGRES_USER=nepsity
+      - POSTGRES_PASSWORD=nepsitysecret
+    healthcheck:
+      test: ["CMD", "psql","-U","vagrant","-d","postgres","-c","SELECT 1;"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+volumes:
+  nepsitydb:
